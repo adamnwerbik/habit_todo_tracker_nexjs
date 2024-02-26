@@ -27,7 +27,7 @@ const TodoForm = (props: any) => {
   const onSubmit: SubmitHandler<Inputs> = async (formInputs) => {
     try {
       console.log(formInputs);
-      await mutate("userTodos", addTodoToSB, {
+      await mutate("userTodos", addTodoToSB(formInputs), {
         optimisticData: [
           ...data,
           {
@@ -42,6 +42,7 @@ const TodoForm = (props: any) => {
         populateCache: true,
         revalidate: false,
       });
+      toast.success("Successfully added!");
     } catch (error) {
       toast.error("eeee");
       console.log(error);

@@ -14,9 +14,10 @@ const UserTodos = () => {
         <div>
           <h1>Your data:</h1>
           {data.map((d: any) => (
-            <p>
-              {d.id} - {d.name}{" "}
-            </p>
+            <div key={d.id}>
+              {d.id} - {d.name} - {d.is_starred ? "****" : ""} - {d.due_date} -{" "}
+              {d.due_time}
+            </div>
           ))}
         </div>
       );
