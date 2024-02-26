@@ -6,6 +6,7 @@ function delay(t: number) {
 }
 
 export const fetcher = async () => {
+  const x = await delay(2000);
   const sb = createClient();
   const {
     data: { user },

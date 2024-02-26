@@ -2,11 +2,13 @@
 import toast from "react-hot-toast";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useSWRConfig } from "swr";
+import useSWR from "swr";
 import { useEffect } from "react";
-import { customfn, fetcher } from "./helperFunctions";
+import { addTodoToSB, customfn, fetcher } from "./helperFunctions";
 
-const TodoForm = () => {
+const TodoForm = (props: any) => {
   const { mutate } = useSWRConfig();
+  const { data } = useSWR("userTodos");
   //Form Stuff
   type Inputs = {
     taskName: string;
@@ -25,14 +27,24 @@ const TodoForm = () => {
   const onSubmit: SubmitHandler<Inputs> = async (formInputs) => {
     try {
       console.log(formInputs);
-      await mutate("userTodos", customfn, {
-        optimisticData: [{ id: "zog" }],
+      await mutate("userTodos", addTodoToSB, {
+        optimisticData: [
+          ...data,
+          {
+            name: formInputs.taskName,
+            details: formInputs.taskDetails,
+            due_date: formInputs.dueDate,
+            due_time: formInputs.dueTime,
+            is_starred: formInputs.isStarred,
+          },
+        ],
         rollbackOnError: true,
         populateCache: true,
         revalidate: false,
       });
     } catch (error) {
       toast.error("eeee");
+      console.log(error);
     }
   };
   useEffect(() => {
