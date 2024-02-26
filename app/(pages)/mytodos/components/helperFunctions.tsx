@@ -1,9 +1,7 @@
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { StringLiteral } from "typescript";
-const sortArray = require("sort-array");
 const arraySort = require("array-sort");
-import sortOn from "sort-on";
 
 function delay(t: number) {
   return new Promise((resolve) => setTimeout(resolve, t));
@@ -21,34 +19,15 @@ export const fetcher = async () => {
       .select("*")
       .eq("created_by", user.id);
     console.log(ToDos);
-    sortArray(ToDos);
-    return ToDos;
+    return sortByFavThenTime2(ToDos);
   }
-};
-
-export const customfn = async () => {
-  //const x = await delay(2000);
-  return [
-    {
-      userId: 1,
-      id: 1,
-      title: "delectus aut autem",
-      completed: false,
-    },
-    {
-      userId: 1,
-      id: 2,
-      title: "quis ut nam facilis et officia qui",
-      completed: false,
-    },
-  ];
 };
 
 export async function getUserTodosFromSB(user: User) {
   console.log(user.id);
 }
 
-interface todo {
+export interface todo {
   id: number;
   name?: string;
   details?: string;
@@ -83,16 +62,8 @@ export async function addTodoToSB(formInputs: any) {
   }
 }
 
-function sortByFavThenTime(data: Array<todo> | null) {
-  console.log("yaya");
-  sortArray(data, {
-    by: "id",
-    order: "desc",
-  });
-  console.log("yaya");
-  return data;
-}
-
-function sortByFavThenTime2(data: Array<todo> | null) {
-  return arraySort(data, ["is_starred", "due_day", "due_time"]);
+export function sortByFavThenTime2(data: Array<todo> | null) {
+  arraySort(data, ["due_time"]);
+  arraySort(data, ["due_date"]);
+  return arraySort(data, ["is_starred"], { reverse: true });
 }

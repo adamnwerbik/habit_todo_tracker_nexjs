@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useSWRConfig } from "swr";
 import useSWR from "swr";
 import { useEffect } from "react";
-import { addTodoToSB, customfn, fetcher } from "./helperFunctions";
+import { addTodoToSB, fetcher, sortByFavThenTime2 } from "./helperFunctions";
 
 const TodoForm = (props: any) => {
   const { mutate } = useSWRConfig();
@@ -28,7 +28,7 @@ const TodoForm = (props: any) => {
     try {
       console.log(formInputs);
       await mutate("userTodos", addTodoToSB(formInputs), {
-        optimisticData: [
+        optimisticData: sortByFavThenTime2([
           ...data,
           {
             name: formInputs.taskName,
@@ -37,7 +37,7 @@ const TodoForm = (props: any) => {
             due_time: formInputs.dueTime,
             is_starred: formInputs.isStarred,
           },
-        ],
+        ]),
         rollbackOnError: true,
         populateCache: true,
         revalidate: false,

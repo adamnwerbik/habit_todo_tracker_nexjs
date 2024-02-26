@@ -2,22 +2,27 @@
 import React from "react";
 import useSWR from "swr";
 import { fetcher } from "./helperFunctions";
+import { ClipLoader } from "react-spinners";
+import TodoCard from "./TodoCard";
 
 const UserTodos = () => {
   const { data, error, isLoading } = useSWR("userTodos", fetcher);
 
   if (error) return <div>failed to load</div>;
-  if (isLoading) return <div>Loading todos...</div>;
+  if (isLoading)
+    return (
+      <div className="items-center text-center py-5">
+        <ClipLoader color="#36d7b7" />
+        <p>loading todos....</p>
+      </div>
+    );
   try {
     if (data) {
       return (
         <div>
           <h1>Your data:</h1>
           {data.map((d: any) => (
-            <div key={d.id}>
-              {d.id} - {d.name} - {d.is_starred ? "****" : ""} - {d.due_date} -{" "}
-              {d.due_time}
-            </div>
+            <TodoCard data={d} />
           ))}
         </div>
       );
