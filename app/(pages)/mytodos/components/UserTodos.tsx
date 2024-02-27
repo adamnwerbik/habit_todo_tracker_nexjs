@@ -4,10 +4,11 @@ import useSWR from "swr";
 import { fetcher } from "./helperFunctions";
 import { ClipLoader } from "react-spinners";
 import TodoCard from "./TodoCard";
+import { MdArrowDropDown } from "react-icons/md";
 
 const UserTodos = () => {
   const { data, error, isLoading } = useSWR("userTodos", fetcher);
-  const [viewCompleted, setViewCompleted] = useState(false)
+  const [viewCompleted, setViewCompleted] = useState(false);
 
   if (error) return <div>failed to load</div>;
   if (isLoading)
@@ -27,8 +28,17 @@ const UserTodos = () => {
           ))}
 
           <div>
-            <h1>Completed todos ()</h1>
-            {viewCompleted ? <div>"COMP"</div> : }
+            <div className="flex flex-row">
+              <button
+                onClick={(e) => {
+                  setViewCompleted(!viewCompleted);
+                }}
+              >
+                <MdArrowDropDown size={25} />
+              </button>
+              <p>Completed todos ()</p>
+            </div>
+            {viewCompleted ? <div>"COMP"</div> : ""}
           </div>
         </div>
       );
