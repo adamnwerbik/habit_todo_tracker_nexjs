@@ -17,10 +17,10 @@ export default async function page() {
   }
 
   return (
-    <div>
+    <>
       <h1>Your todos, {user.email}!</h1>
-      <TodoForm></TodoForm>
+      <TodoForm />
       <UserTodos />
-    </div>
+    </>
   );
 }
