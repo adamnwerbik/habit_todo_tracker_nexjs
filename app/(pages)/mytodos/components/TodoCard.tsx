@@ -14,6 +14,7 @@ import {
 } from "./helperFunctions";
 import useSWR, { useSWRConfig } from "swr";
 import toast from "react-hot-toast";
+import { parse, format } from "date-fns";
 
 function TodoCard(props: any) {
   const today = new Date();
@@ -109,8 +110,10 @@ function TodoCard(props: any) {
         <p>
           {props.data.due_date
             ? props.data.due_time
-              ? `Due on ${props.data.due_date} at ${props.data.due_time}`
-              : `Due on ${props.data.due_date}`
+              ? `Due by ${format(props.data.due_date, "do MMM yyyy")} at ${
+                  props.data.due_time
+                }`
+              : `Due by ${format(props.data.due_date, "do MMM yyyy")}`
             : ""}
         </p>
       </div>
