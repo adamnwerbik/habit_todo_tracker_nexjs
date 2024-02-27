@@ -76,6 +76,7 @@ export async function markATaskAsCompleteSB(taskID: number) {
 export async function deleteATaskFromSB(taskID: number) {
   const sb = createClient();
   const { error } = await sb.from("ToDos").delete().eq("id", taskID);
+  return await fetcher();
 }
 
 export async function favouriteATaskSB(taskID: number) {}
