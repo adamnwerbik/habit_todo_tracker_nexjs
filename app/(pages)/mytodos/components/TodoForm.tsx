@@ -8,6 +8,7 @@ import { addTodoToSB, fetcher, sortByFavThenTime2 } from "./helperFunctions";
 
 const TodoForm = (props: any) => {
   const [wantsToAddTask, setWantsToAddTask] = useState(false);
+  const [taskName, setTaskName] = useState("");
   const { mutate } = useSWRConfig();
   const { data } = useSWR("userTodos");
   //Form Stuff
@@ -45,7 +46,7 @@ const TodoForm = (props: any) => {
       });
       toast.success("Successfully added!");
     } catch (error) {
-      toast.error("eeee");
+      toast.error("Error adding todo. Please try again.");
       console.log(error);
     }
   };
@@ -58,41 +59,61 @@ const TodoForm = (props: any) => {
   return (
     <>
       {wantsToAddTask ? (
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col max-w-sm"
-        >
-          <label>Task (required): </label>
-          <input
-            {...register("taskName", { required: true })}
-            placeholder="Task title..."
-          />
-          {errors.taskName && (
-            <p role="alert" className="text-red-400">
-              {"⚠️ A title is required."}
-            </p>
-          )}
-          <label>Details (optional):</label>
-          <input
-            {...register("taskDetails")}
-            placeholder="Details (optional)"
-          />
-          <label>Due Date (optional):</label>
-          <input {...register("dueDate", { min: "2024-01-02" })} type="date" />
-          {errors.dueDate && (
-            <p role="alert" className="text-red-400">
-              {"⚠️ Date must be after Jan 1, 2024"}
-            </p>
-          )}
-          <label>Due Time (optional):</label>
-          <input {...register("dueTime")} type="time" />
-          <label>Importance (optional):</label>
-          <select {...register("isStarred")}>
-            <option value="false">Normal</option>
-            <option value="true">High</option>
-          </select>
-          <input type="submit" className="bg-red-300 p-2 mt-5" />
-        </form>
+        <>
+          <button
+            className="bg-red-400 text-white font-bold px-2 rounded-md text-center "
+            onClick={(e) => {
+              setWantsToAddTask(false);
+            }}
+          >
+            X
+          </button>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col max-w-sm"
+          >
+            <input
+              {...register("taskName", { required: true })}
+              placeholder="Task title..."
+              onChange={(e) => {
+                setTaskName(e.target.value);
+              }}
+            />
+
+            {errors.taskName && (
+              <p role="alert" className="text-red-400">
+                {"⚠️ A title is required."}
+              </p>
+            )}
+
+            <input
+              {...register("taskDetails")}
+              placeholder="Details (optional)"
+            />
+
+            <input
+              {...register("dueDate", { min: "2024-01-02" })}
+              type="date"
+            />
+            {errors.dueDate && (
+              <p role="alert" className="text-red-400">
+                {"⚠️ Date must be after Jan 1, 2024"}
+              </p>
+            )}
+
+            <input {...register("dueTime")} type="time" />
+            <label>Importance (optional):</label>
+            <select {...register("isStarred")}>
+              <option value="false">Normal</option>
+              <option value="true">High</option>
+            </select>
+            {taskName ? (
+              <input type="submit" className="bg-red-300 p-2 mt-5" />
+            ) : (
+              ""
+            )}
+          </form>
+        </>
       ) : (
         <div onClick={(e) => setWantsToAddTask(true)}>
           <h1>(+) Add Task</h1>
