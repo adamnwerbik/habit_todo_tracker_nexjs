@@ -2,6 +2,7 @@ import React from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 import { GoStar, GoStarFill } from "react-icons/go";
+import { deleteATaskFromSB } from "./helperFunctions";
 
 function TodoCard(props: any) {
   const today = new Date();

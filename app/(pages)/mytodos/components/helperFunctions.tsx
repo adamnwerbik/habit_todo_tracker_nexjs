@@ -68,3 +68,16 @@ export function sortByFavThenTime2(data: Array<todo> | null) {
   arraySort(data, ["due_date"]);
   return arraySort(data, ["is_starred"], { reverse: true });
 }
+
+export async function markATaskAsCompleteSB(taskID: number) {
+  console.log("COMPLETING TASK");
+}
+
+export async function deleteATaskFromSB(taskID: number) {
+  const sb = createClient();
+  const { error } = await sb.from("ToDos").delete().eq("id", taskID);
+}
+
+export async function favouriteATaskSB(taskID: number) {}
+
+export async function unFavouriteATaskSB(taskID: number) {}

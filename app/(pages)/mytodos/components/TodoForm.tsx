@@ -5,6 +5,7 @@ import { useSWRConfig } from "swr";
 import useSWR from "swr";
 import { useEffect, useState } from "react";
 import { addTodoToSB, fetcher, sortByFavThenTime2 } from "./helperFunctions";
+import { MdOutlineAddTask } from "react-icons/md";
 
 const TodoForm = (props: any) => {
   const [wantsToAddTask, setWantsToAddTask] = useState(false);
@@ -115,9 +116,12 @@ const TodoForm = (props: any) => {
           </form>
         </>
       ) : (
-        <div onClick={(e) => setWantsToAddTask(true)}>
-          <h1>(+) Add Task</h1>
-        </div>
+        <button
+          onClick={(e) => setWantsToAddTask(true)}
+          className="flex flex-row text-center justify-center items-center"
+        >
+          <MdOutlineAddTask /> <p className="ml-2">Add a task</p>
+        </button>
       )}
     </>
   );

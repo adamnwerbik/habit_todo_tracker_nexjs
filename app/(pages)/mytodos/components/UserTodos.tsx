@@ -28,8 +28,6 @@ const UserTodos = () => {
       );
       return (
         <div>
-          <h1>Your todos:</h1>
-
           {notCompletedTasksData.map((d: any) => (
             <TodoCard data={d} />
           ))}
