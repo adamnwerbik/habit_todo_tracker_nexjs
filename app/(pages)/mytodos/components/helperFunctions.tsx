@@ -34,6 +34,7 @@ export interface todo {
   due_date?: string;
   due_time?: string;
   is_starred?: boolean;
+  isCompleted?: boolean;
 }
 
 export async function addTodoToSB(formInputs: any) {
