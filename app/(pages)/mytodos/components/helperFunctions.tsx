@@ -70,7 +70,43 @@ export function sortByFavThenTime2(data: Array<todo> | null) {
 }
 
 export async function markATaskAsCompleteSB(taskID: number) {
-  console.log("COMPLETING TASK");
+  const sb = createClient();
+  const { data, error } = await sb
+    .from("ToDos")
+    .update({ isCompleted: true })
+    .eq("id", taskID)
+    .select();
+  return await fetcher();
+}
+
+export async function markATaskAsUnCompleteSB(taskID: number) {
+  const sb = createClient();
+  const { data, error } = await sb
+    .from("ToDos")
+    .update({ isCompleted: false })
+    .eq("id", taskID)
+    .select();
+  return await fetcher();
+}
+
+export async function markATaskAsFavouriteSB(taskID: number) {
+  const sb = createClient();
+  const { data, error } = await sb
+    .from("ToDos")
+    .update({ is_starred: true })
+    .eq("id", taskID)
+    .select();
+  return await fetcher();
+}
+
+export async function markATaskAsUnFavouriteSB(taskID: number) {
+  const sb = createClient();
+  const { data, error } = await sb
+    .from("ToDos")
+    .update({ is_starred: false })
+    .eq("id", taskID)
+    .select();
+  return await fetcher();
 }
 
 export async function deleteATaskFromSB(taskID: number) {

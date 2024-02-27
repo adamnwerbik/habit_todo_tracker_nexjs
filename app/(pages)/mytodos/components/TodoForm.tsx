@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { useEffect, useState } from "react";
 import { addTodoToSB, fetcher, sortByFavThenTime2 } from "./helperFunctions";
 import { MdOutlineAddTask } from "react-icons/md";
+import { IoCloseOutline } from "react-icons/io5";
 
 const TodoForm = (props: any) => {
   const [wantsToAddTask, setWantsToAddTask] = useState(false);
@@ -67,7 +68,7 @@ const TodoForm = (props: any) => {
               setWantsToAddTask(false);
             }}
           >
-            X
+            <IoCloseOutline size={25} />
           </button>
           <form
             onSubmit={handleSubmit(onSubmit)}
