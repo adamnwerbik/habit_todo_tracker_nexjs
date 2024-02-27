@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import useSWR from "swr";
-import { fetcher } from "./helperFunctions";
+import { fetcher, todo } from "./helperFunctions";
 import { ClipLoader } from "react-spinners";
 import TodoCard from "./TodoCard";
 import { MdArrowDropDown } from "react-icons/md";
@@ -20,10 +20,17 @@ const UserTodos = () => {
     );
   try {
     if (data) {
+      const notCompletedTasksData = data.filter((d: todo) =>
+        d.isCompleted ? false : true
+      );
+      const completedTasksData = data.filter((d: todo) =>
+        d.isCompleted ? true : false
+      );
       return (
         <div>
           <h1>Your todos:</h1>
-          {data.map((d: any) => (
+
+          {notCompletedTasksData.map((d: any) => (
             <TodoCard data={d} />
           ))}
 
@@ -36,9 +43,17 @@ const UserTodos = () => {
               >
                 <MdArrowDropDown size={25} />
               </button>
-              <p>Completed todos ()</p>
+              <p>Completed todos ({completedTasksData.length})</p>
             </div>
-            {viewCompleted ? <div>"COMP"</div> : ""}
+            {viewCompleted ? (
+              <div>
+                {completedTasksData.map((d: todo) => (
+                  <TodoCard data={d} />
+                ))}
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       );
