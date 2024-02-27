@@ -58,7 +58,7 @@ function TodoCard(props: any) {
         rollbackOnError: true,
         revalidate: true,
       });
-      //toast.success("Completed!");
+      toast.success("Marked not complete!");
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -73,7 +73,7 @@ function TodoCard(props: any) {
         rollbackOnError: true,
         revalidate: true,
       });
-      toast.success("marked fav!");
+      toast.success("Starred!");
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -88,7 +88,7 @@ function TodoCard(props: any) {
         rollbackOnError: true,
         revalidate: true,
       });
-      toast.success("Marked normal!");
+      toast.success("Unstarred!");
     } catch (error) {
       toast.error("Something went wrong");
     }

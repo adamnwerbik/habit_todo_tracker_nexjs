@@ -110,7 +110,7 @@ const TodoForm = (props: any) => {
               <option value="true">High</option>
             </select>
             {taskName ? (
-              <input type="submit" className="bg-red-300 p-2 mt-5" />
+              <input type="submit" className="bg-red-300 p-2 mt-5 rounded-sm" />
             ) : (
               ""
             )}
@@ -119,7 +119,7 @@ const TodoForm = (props: any) => {
       ) : (
         <button
           onClick={(e) => setWantsToAddTask(true)}
-          className="flex flex-row text-center justify-center items-center"
+          className="flex flex-row text-center justify-center items-center border-gray-200 border rounded-md bg-gray-200 px-2 shadow-sm"
         >
           <MdOutlineAddTask /> <p className="ml-2">Add a task</p>
         </button>

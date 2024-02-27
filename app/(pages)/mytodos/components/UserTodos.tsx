@@ -5,6 +5,7 @@ import { fetcher, todo } from "./helperFunctions";
 import { ClipLoader } from "react-spinners";
 import TodoCard from "./TodoCard";
 import { MdArrowDropDown } from "react-icons/md";
+import Image from "next/image";
 
 const UserTodos = () => {
   const { data, error, isLoading } = useSWR("userTodos", fetcher);
@@ -27,13 +28,26 @@ const UserTodos = () => {
         d.isCompleted ? true : false
       );
       return (
-        <div>
-          {notCompletedTasksData.map((d: any) => (
-            <TodoCard data={d} />
-          ))}
+        <>
+          {notCompletedTasksData.length ? (
+            notCompletedTasksData.map((d: any) => (
+              <TodoCard data={d} key={d.id} />
+            ))
+          ) : (
+            <div>
+              <Image
+                src={"Completed-pana.svg"}
+                alt="All tasks completed graphic"
+                height={400}
+                width={400}
+                className="opacity-35"
+              />
+              <h1>You have no outstanding tasks!</h1>
+            </div>
+          )}
 
-          <div>
-            <div className="flex flex-row">
+          <div className="min-w-[400px]">
+            <div className="flex flex-row text-left">
               <button
                 onClick={(e) => {
                   setViewCompleted(!viewCompleted);
@@ -53,7 +67,7 @@ const UserTodos = () => {
               ""
             )}
           </div>
-        </div>
+        </>
       );
     }
   } catch (error) {}
