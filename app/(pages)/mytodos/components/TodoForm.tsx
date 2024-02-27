@@ -30,6 +30,7 @@ const TodoForm = (props: any) => {
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (formInputs) => {
     try {
+      setWantsToAddTask(false);
       console.log(formInputs);
       await mutate("userTodos", addTodoToSB(formInputs), {
         optimisticData: sortByFavThenTime2([
@@ -63,7 +64,7 @@ const TodoForm = (props: any) => {
       {wantsToAddTask ? (
         <>
           <button
-            className="bg-red-400 text-white font-bold px-2 rounded-md text-center "
+            className="bg-[#358960] text-white font-bold px-2 rounded-md text-center hover:bg-[#2a6d4c] "
             onClick={(e) => {
               setWantsToAddTask(false);
             }}
@@ -110,7 +111,10 @@ const TodoForm = (props: any) => {
               <option value="true">High</option>
             </select>
             {taskName ? (
-              <input type="submit" className="bg-red-300 p-2 mt-5 rounded-sm" />
+              <input
+                type="submit"
+                className="bg-[#358960] p-2 mt-5 rounded-sm hover:bg-[#2a6d4c] text-white"
+              />
             ) : (
               ""
             )}
@@ -119,7 +123,7 @@ const TodoForm = (props: any) => {
       ) : (
         <button
           onClick={(e) => setWantsToAddTask(true)}
-          className="flex flex-row text-center justify-center items-center border-gray-200 border rounded-md bg-gray-200 px-2 shadow-sm"
+          className="flex flex-row text-center justify-center items-center border-gray-200 border rounded-md bg-gray-200 px-2 shadow-sm hover:bg-gray-300"
         >
           <MdOutlineAddTask /> <p className="ml-2">Add a task</p>
         </button>

@@ -15,7 +15,7 @@ const UserTodos = () => {
   if (isLoading)
     return (
       <div className="items-center text-center py-5">
-        <ClipLoader color="#36d7b7" />
+        <ClipLoader color="#358960" />
         <p>loading todos....</p>
       </div>
     );
@@ -33,8 +33,8 @@ const UserTodos = () => {
             notCompletedTasksData.map((d: any) => (
               <TodoCard data={d} key={d.id} />
             ))
-          ) : (
-            <div>
+          ) : data.length ? (
+            <div className="text-center mb-3">
               <Image
                 src={"Completed-pana.svg"}
                 alt="All tasks completed graphic"
@@ -42,7 +42,11 @@ const UserTodos = () => {
                 width={400}
                 className="opacity-35"
               />
-              <h1>You have no outstanding tasks!</h1>
+              <h1>You have no outstanding tasks! Yay!</h1>
+            </div>
+          ) : (
+            <div className="mt-2">
+              <p>You have no todos. Add some with the form above!</p>
             </div>
           )}
 
