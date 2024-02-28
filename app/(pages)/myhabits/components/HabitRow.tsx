@@ -1,6 +1,9 @@
 "use client";
+import { createClient } from "@/utils/supabase/client";
 import { add, format } from "date-fns";
 import React, { useState } from "react";
+import useSWR from "swr";
+import { Habit } from "./helperFunctions";
 
 export const HabitHeader = (props: any) => {
   const dates = [];
@@ -33,12 +36,25 @@ export const HabitHeader = (props: any) => {
   );
 };
 
+const fetcher = async (habitID: number) => {
+  const sb = createClient();
+  let { data: habitDoLog, error } = await sb
+    .from("habitDoLog")
+    .select("*")
+    .eq("habitDoneFK", habitID);
+  return habitDoLog;
+};
+
 export const HabitRow = (props: {
   habitName: string;
   habitID: number;
   startingDate: Date;
 }) => {
-  const dates = [0, 1, 2, 3, 4, 5, 6];
+  const datesOffsets = [0, 1, 2, 3, 4, 5, 6];
+
+  const { data, error, isLoading } = useSWR(`${props.habitID}`, fetcher);
+  console.log(data);
+  console.log("ahoj");
   return (
     <div className="flex flex-col">
       <div className="flex flex-row ">
@@ -46,7 +62,7 @@ export const HabitRow = (props: {
           {props.habitName}
         </div>
         <div className="w-72 md:w-[500px] lg:w-[700px] xl:w-[750px] bg-gray-200 flex flex-row rounded-sm">
-          {dates.map((d) => {
+          {datesOffsets.map((d) => {
             return (
               <HabitCell
                 date={add(props.startingDate, { days: -d })}
@@ -75,7 +91,7 @@ export const HabitCell = (props: { date: Date; habitID: number }) => {
         setCheckedOff((prev) => !prev);
       }}
     >
-      {checkedOff ? "Y" : "N"}
+      {checkedOff ? "✔️" : "X"}
     </div>
   );
 };

@@ -7,12 +7,13 @@ import { useEffect, useState } from "react";
 import { addTodoToSB, fetcher, sortByFavThenTime2 } from "./helperFunctions";
 import { MdOutlineAddTask } from "react-icons/md";
 import { IoCloseOutline } from "react-icons/io5";
+import { SWRConfig } from "swr";
 
 const TodoForm = (props: any) => {
   const [wantsToAddTask, setWantsToAddTask] = useState(false);
   const [taskName, setTaskName] = useState("");
   const { mutate } = useSWRConfig();
-  const { data } = useSWR("userTodos");
+  
   //Form Stuff
   type Inputs = {
     taskName: string;

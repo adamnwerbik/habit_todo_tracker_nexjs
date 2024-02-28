@@ -10,7 +10,7 @@ import { addANewHabitToSB } from "./serverFunctions";
 
 const fetcher = async () => "a";
 
-const TodoForm = (props: any) => {
+const HabitAdderForm = (props: any) => {
   const [wantsToAddHabbit, setWantsToAddHabbit] = useState(false);
   const [habbitName, setHabbitName] = useState("");
   const { mutate } = useSWRConfig();
@@ -28,6 +28,7 @@ const TodoForm = (props: any) => {
     formState: { errors, isSubmitSuccessful },
     reset,
   } = useForm<Inputs>();
+
   const onSubmit: SubmitHandler<Inputs> = async (formInputs) => {
     try {
       setWantsToAddHabbit(false);
@@ -122,4 +123,4 @@ const TodoForm = (props: any) => {
     </>
   );
 };
-export default TodoForm;
+export default HabitAdderForm;
