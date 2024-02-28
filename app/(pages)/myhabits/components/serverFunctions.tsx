@@ -67,4 +67,14 @@ export async function addAHabitDoLog(
       .select();
     console.log(error);
   }
+  return fetcher(habitID.toString());
 }
+
+const fetcher = async (habitID: string) => {
+  const sb = createClient();
+  let { data: habitDoLog, error } = await sb
+    .from("habitDoLog")
+    .select("*")
+    .eq("habitDoneFK", habitID);
+  return habitDoLog;
+};

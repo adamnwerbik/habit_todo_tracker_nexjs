@@ -2,7 +2,7 @@
 import { createClient } from "@/utils/supabase/client";
 import { add, format, parse } from "date-fns";
 import React, { useState } from "react";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { Habit } from "./helperFunctions";
 import { addAHabitDoLog } from "./serverFunctions";
 
@@ -37,7 +37,7 @@ export const HabitHeader = (props: any) => {
   );
 };
 
-const fetcher = async (habitID: string) => {
+export const fetcher = async (habitID: string) => {
   const sb = createClient();
   let { data: habitDoLog, error } = await sb
     .from("habitDoLog")
@@ -116,19 +116,39 @@ export const HabitCell = (props: {
   function getBackGroundColour() {
     return props.covered ? "#90EE90" : "#FFFFFF";
   }
+  const { mutate } = useSWRConfig();
+  const { data } = useSWR(`${props.habitID}`);
+
   return (
     <div
       style={{ backgroundColor: getBackGroundColour() }}
       className="w-[100%] min-w-[1/7] text-center border border-gray-400"
       data-day={props.date}
-      onClick={(e) => {
+      onClick={async (e) => {
         console.log(
           `${e.currentTarget.getAttribute("data-day")} for habitID ${
             props.habitID
           } `
         );
         console.log("Adding to DB");
-        addAHabitDoLog(props.habitID, props.date, props.checked);
+
+        try {
+          await mutate(
+            `${props.habitID}`,
+            addAHabitDoLog(props.habitID, props.date, props.checked),
+            {
+              optimisticData: [...data],
+              rollbackOnError: true,
+              populateCache: true,
+              revalidate: false,
+            }
+          );
+
+          //toast.success("Successfully added!");
+        } catch (error) {
+          //toast.error("Error adding habit. Please try again.");
+          //console.log(error);
+        }
 
         //setCheckedOff((prev) => !prev);
       }}
