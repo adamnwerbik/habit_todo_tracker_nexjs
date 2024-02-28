@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { Habit } from "./helperFunctions";
 import { addAHabitDoLog } from "./serverFunctions";
+import Link from "next/link";
 
 export const HabitHeader = (props: any) => {
   const dates = [];
@@ -67,7 +68,7 @@ export const HabitRow = (props: {
     <div className="flex flex-col">
       <div className="flex flex-row ">
         <div className="w-24 bg-gray-300 justify-center text-center border-gray-400 border ">
-          {props.habitName}
+          <Link href={`/myhabits/${props.habitID}`}>{props.habitName}</Link>
         </div>
         <div className="w-72 md:w-[500px] lg:w-[700px] xl:w-[750px] bg-gray-200 flex flex-row rounded-sm">
           {datesOffsets.map((d) => {
@@ -142,7 +143,7 @@ export const HabitCell = (props: {
               `${props.habitID}`,
               addAHabitDoLog(props.habitID, props.date, props.checked),
               {
-                optimisticData: data.filter((e) => {
+                optimisticData: data.filter((e: any) => {
                   return !(e.dateDone === props.date);
                 }),
                 rollbackOnError: true,

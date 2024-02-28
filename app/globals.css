@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* do tomorrow */
+main {
+  background-image: none;
+}

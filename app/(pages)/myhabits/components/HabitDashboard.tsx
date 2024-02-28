@@ -29,7 +29,7 @@ const HabitDashboard = (props: any) => {
     return (
       <div>
         <div className="text-center flex flex-col items-center">
-          <h1>Your habits</h1>
+          <h1>Your habits 🌱</h1>
           <HabitAdderForm userID={props.userID} />
         </div>
         <br></br>
