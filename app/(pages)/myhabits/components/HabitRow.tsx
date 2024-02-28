@@ -56,9 +56,9 @@ export const HabitRow = (props: {
 
   const { data, error, isLoading } = useSWR(`${props.habitID}`, fetcher);
   console.log(data);
-  console.log(
-    `Habit with ID:${props.habitID} repeats every ${props.repeatsEveryXdays} days`
-  );
+  //console.log(
+  //  `Habit with ID:${props.habitID} repeats every ${props.repeatsEveryXdays} days`
+  //);
 
   const datesDonesYYYYMMDD: string[] = [];
   data?.map((i) => datesDonesYYYYMMDD.push(i.dateDone));
@@ -83,12 +83,16 @@ export const HabitRow = (props: {
             const datesCovered: any[] = [];
             datesDonesYYYYMMDD.map((dateDone) => {
               for (let i = 0; i < props.repeatsEveryXdays; i++) {
-                datesCovered.push(
-                  format(
-                    add(parse(dateDone, "yyyy-mm-dd", new Date()), { days: i }),
-                    "yyyy-mm-dd"
-                  )
-                );
+                try {
+                  datesCovered.push(
+                    format(
+                      add(parse(dateDone, "yyyy-mm-dd", new Date()), {
+                        days: i,
+                      }),
+                      "yyyy-mm-dd"
+                    )
+                  );
+                } catch {}
               }
             });
 
@@ -131,18 +135,37 @@ export const HabitCell = (props: {
           } `
         );
         console.log("Adding to DB");
-
         try {
-          await mutate(
-            `${props.habitID}`,
-            addAHabitDoLog(props.habitID, props.date, props.checked),
-            {
-              optimisticData: [...data],
-              rollbackOnError: true,
-              populateCache: true,
-              revalidate: false,
-            }
-          );
+          //deleting it -RE problem with dates and coverage?
+          if (props.checked) {
+            await mutate(
+              `${props.habitID}`,
+              addAHabitDoLog(props.habitID, props.date, props.checked),
+              {
+                optimisticData: data.filter((e) => {
+                  return !(e.dateDone === props.date);
+                }),
+                rollbackOnError: true,
+                populateCache: true,
+                revalidate: false,
+              }
+            );
+          } else {
+            //adding it
+            await mutate(
+              `${props.habitID}`,
+              addAHabitDoLog(props.habitID, props.date, props.checked),
+              {
+                optimisticData: [
+                  ...data,
+                  { habitDoneFK: props.habitID, dateDone: props.date },
+                ],
+                rollbackOnError: true,
+                populateCache: true,
+                revalidate: false,
+              }
+            );
+          }
 
           //toast.success("Successfully added!");
         } catch (error) {
