@@ -4,6 +4,8 @@ import HabitAdderForm from "./components/HabitAdderForm";
 import HabitVisualiser from "./components/HabitVisualiser";
 import { HabitHeader, HabitRow } from "./components/HabitRow";
 import { add } from "date-fns";
+import { fetchAUsersHabitsSB } from "./components/serverFunctions";
+
 //components
 
 export default async function page() {
@@ -18,7 +20,7 @@ export default async function page() {
 
   //Set starting date for components below
   const dateToday = add(new Date(), { days: -0 });
-
+  const userHabits = await fetchAUsersHabitsSB();
   return (
     <>
       <h1>Your habits, {user.email}!</h1>
@@ -26,9 +28,18 @@ export default async function page() {
       <HabitAdderForm />
       <br></br>
       <HabitHeader startingDate={dateToday} />
-      <HabitRow startingDate={dateToday} habitName="A" habitID={1} />
-      <HabitRow startingDate={dateToday} habitName="B" habitID={2} />
-      <HabitRow startingDate={dateToday} habitName="C" habitID={3} />
+      {userHabits
+        ? userHabits.map((h: any) => {
+            return (
+              <HabitRow
+                key={h.id}
+                startingDate={dateToday}
+                habitName={h.habitName}
+                habitID={h.id}
+              />
+            );
+          })
+        : ""}
     </>
   );
 }

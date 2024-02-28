@@ -38,28 +38,44 @@ export const HabitRow = (props: {
   habitID: number;
   startingDate: Date;
 }) => {
-  const [checkedOff, setCheckedOff] = useState(false);
   const dates = [0, 1, 2, 3, 4, 5, 6];
   return (
     <div className="flex flex-col">
       <div className="flex flex-row ">
         <div className="w-24 bg-gray-300 justify-center text-center border-gray-400 border ">
-          {props.habitName} - {props.habitID}
+          {props.habitName}
         </div>
         <div className="w-72 md:w-[500px] lg:w-[700px] xl:w-[750px] bg-gray-200 flex flex-row rounded-sm">
           {dates.map((d) => {
             return (
-              <div
-                className="w-[100%] min-w-[1/7] text-center border border-gray-400"
-                data-day={add(props.startingDate, { days: -d })}
-                onClick={(e) => {
-                  console.log(e.currentTarget.getAttribute("data-day"));
-                }}
-              ></div>
+              <HabitCell
+                date={add(props.startingDate, { days: -d })}
+                habitID={props.habitID}
+              />
             );
           })}
         </div>
       </div>
+    </div>
+  );
+};
+
+export const HabitCell = (props: { date: Date; habitID: number }) => {
+  const [checkedOff, setCheckedOff] = useState(false);
+  return (
+    <div
+      className="w-[100%] min-w-[1/7] text-center border border-gray-400"
+      data-day={props.date}
+      onClick={(e) => {
+        console.log(
+          `${e.currentTarget.getAttribute("data-day")} for habitID ${
+            props.habitID
+          } `
+        );
+        setCheckedOff((prev) => !prev);
+      }}
+    >
+      {checkedOff ? "Y" : "N"}
     </div>
   );
 };

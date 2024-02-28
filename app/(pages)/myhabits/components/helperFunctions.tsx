@@ -1,11 +1,16 @@
+"use server";
+
+import { createClient } from "@/utils/supabase/server";
+
 export enum categoryHabitEnum {
   binaryYesNo,
   measurable,
 }
 export type Habit = {
-  name: string;
-  type: categoryHabitEnum;
-  details?: string;
+  habitName: string;
+  habitDetails?: string;
+  repeatsEveryXdays: number;
+  type?: categoryHabitEnum;
   strength?: number;
   belongsToUserID?: string;
   isArchived?: boolean;
@@ -14,6 +19,7 @@ export type Habit = {
   category?: categoryEnum;
 };
 
+//future
 export enum categoryEnum {
   sport,
   learning,
