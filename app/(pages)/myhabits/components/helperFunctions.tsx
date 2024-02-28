@@ -6,4 +6,17 @@ export interface Habit {
   isArchived?: boolean;
   firstOccurence?: string;
   latestOccurence?: string;
+  category?: categoryEnum;
+}
+
+export enum categoryEnum {
+  sport,
+  learning,
+  hobbies,
+  social,
+  productivity,
+  health,
+  spiritual,
+  relationship,
+  work,
 }
