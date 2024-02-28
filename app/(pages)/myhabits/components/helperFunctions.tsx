@@ -1,5 +1,10 @@
-export interface Habit {
+export enum categoryHabitEnum {
+  binaryYesNo,
+  measurable,
+}
+export type Habit = {
   name: string;
+  type: categoryHabitEnum;
   details?: string;
   strength?: number;
   belongsToUserID?: string;
@@ -7,7 +12,7 @@ export interface Habit {
   firstOccurence?: string;
   latestOccurence?: string;
   category?: categoryEnum;
-}
+};
 
 export enum categoryEnum {
   sport,
