@@ -13,7 +13,8 @@ const TodoForm = (props: any) => {
   const [wantsToAddTask, setWantsToAddTask] = useState(false);
   const [taskName, setTaskName] = useState("");
   const { mutate } = useSWRConfig();
-  
+  const { data } = useSWR("userTodos");
+
   //Form Stuff
   type Inputs = {
     taskName: string;
@@ -41,7 +42,7 @@ const TodoForm = (props: any) => {
             details: formInputs.taskDetails,
             due_date: formInputs.dueDate,
             due_time: formInputs.dueTime,
-            is_starred: formInputs.isStarred,
+            is_starred: formInputs.isStarred === true ? true : false,
           },
         ]),
         rollbackOnError: true,

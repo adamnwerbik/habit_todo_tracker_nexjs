@@ -1,6 +1,7 @@
 "use server";
 import { Habit } from "./helperFunctions";
 import { createClient } from "@/utils/supabase/server";
+
 export async function addANewHabitToSB(habitData: Habit) {
   console.log(habitData);
   const sb = createClient();
@@ -23,6 +24,7 @@ export async function addANewHabitToSB(habitData: Habit) {
       .select();
     console.log(error);
   }
+  return await fetchAUsersHabitsSB();
 }
 
 export async function fetchAUsersHabitsSB() {
@@ -37,5 +39,32 @@ export async function fetchAUsersHabitsSB() {
       .select("*")
       .eq("createdByUser", user.id); // Correct
     return data;
+  }
+}
+
+export async function addAHabitDoLog(
+  habitID: number,
+  dateDone: string,
+  checked: boolean
+) {
+  const sb = createClient();
+  const {
+    data: { user },
+  } = await sb.auth.getUser();
+
+  if (checked) {
+    console.log("DELETING");
+
+    const { error } = await sb
+      .from("habitDoLog")
+      .delete()
+      .eq("habitDoneFK", habitID)
+      .eq("dateDone", dateDone);
+  } else {
+    const { data, error } = await sb
+      .from("habitDoLog")
+      .insert([{ habitDoneFK: habitID, dateDone: dateDone }])
+      .select();
+    console.log(error);
   }
 }

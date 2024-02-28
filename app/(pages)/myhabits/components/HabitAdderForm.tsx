@@ -7,14 +7,14 @@ import { useEffect, useState } from "react";
 import { MdOutlineAddTask } from "react-icons/md";
 import { IoCloseOutline } from "react-icons/io5";
 import { addANewHabitToSB } from "./serverFunctions";
+import { SWRConfig } from "swr";
 
 const fetcher = async () => "a";
 
 const HabitAdderForm = (props: any) => {
   const [wantsToAddHabbit, setWantsToAddHabbit] = useState(false);
   const [habbitName, setHabbitName] = useState("");
-  const { mutate } = useSWRConfig();
-  const { data } = useSWR("userHabits");
+
   //Form Stuff
   type Inputs = {
     habitName: string;
@@ -29,11 +29,20 @@ const HabitAdderForm = (props: any) => {
     reset,
   } = useForm<Inputs>();
 
+  /// SWR Stuff
+  const { mutate } = useSWRConfig();
+  const { data } = useSWR(`${props.userID}`);
+
   const onSubmit: SubmitHandler<Inputs> = async (formInputs) => {
     try {
       setWantsToAddHabbit(false);
       console.log(formInputs);
-      addANewHabitToSB(formInputs);
+      await mutate(`${props.userID}`, addANewHabitToSB(formInputs), {
+        optimisticData: [...data, { habitName: formInputs.habitName }],
+        rollbackOnError: true,
+        populateCache: true,
+        revalidate: false,
+      });
 
       toast.success("Successfully added!");
     } catch (error) {

@@ -1,13 +1,14 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
-import { add, format } from "date-fns";
+import { add, format, parse } from "date-fns";
 import React, { useState } from "react";
 import useSWR from "swr";
 import { Habit } from "./helperFunctions";
+import { addAHabitDoLog } from "./serverFunctions";
 
 export const HabitHeader = (props: any) => {
   const dates = [];
-  for (let i = 0; i < 7; i++) {
+  for (let i = 6; i > -1; i--) {
     dates.push(add(props.startingDate, { days: -i }));
   }
   return (
@@ -36,7 +37,7 @@ export const HabitHeader = (props: any) => {
   );
 };
 
-const fetcher = async (habitID: number) => {
+const fetcher = async (habitID: string) => {
   const sb = createClient();
   let { data: habitDoLog, error } = await sb
     .from("habitDoLog")
@@ -49,12 +50,19 @@ export const HabitRow = (props: {
   habitName: string;
   habitID: number;
   startingDate: Date;
+  repeatsEveryXdays: number;
 }) => {
-  const datesOffsets = [0, 1, 2, 3, 4, 5, 6];
+  const datesOffsets = [6, 5, 4, 3, 2, 1, 0];
 
   const { data, error, isLoading } = useSWR(`${props.habitID}`, fetcher);
   console.log(data);
-  console.log("ahoj");
+  console.log(
+    `Habit with ID:${props.habitID} repeats every ${props.repeatsEveryXdays} days`
+  );
+
+  const datesDonesYYYYMMDD: string[] = [];
+  data?.map((i) => datesDonesYYYYMMDD.push(i.dateDone));
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-row ">
@@ -63,10 +71,33 @@ export const HabitRow = (props: {
         </div>
         <div className="w-72 md:w-[500px] lg:w-[700px] xl:w-[750px] bg-gray-200 flex flex-row rounded-sm">
           {datesOffsets.map((d) => {
+            let date = format(
+              add(props.startingDate, { days: -d }),
+              "yyyy-MM-dd"
+            );
+            var checked = false;
+            if (datesDonesYYYYMMDD.includes(date)) {
+              var checked = true;
+            }
+
+            const datesCovered: any[] = [];
+            datesDonesYYYYMMDD.map((dateDone) => {
+              for (let i = 0; i < props.repeatsEveryXdays; i++) {
+                datesCovered.push(
+                  format(
+                    add(parse(dateDone, "yyyy-mm-dd", new Date()), { days: i }),
+                    "yyyy-mm-dd"
+                  )
+                );
+              }
+            });
+
             return (
               <HabitCell
-                date={add(props.startingDate, { days: -d })}
+                date={date}
                 habitID={props.habitID}
+                checked={checked}
+                covered={datesCovered.includes(date) ? true : false}
               />
             );
           })}
@@ -76,10 +107,18 @@ export const HabitRow = (props: {
   );
 };
 
-export const HabitCell = (props: { date: Date; habitID: number }) => {
-  const [checkedOff, setCheckedOff] = useState(false);
+export const HabitCell = (props: {
+  date: string;
+  habitID: number;
+  checked: boolean;
+  covered: boolean;
+}) => {
+  function getBackGroundColour() {
+    return props.covered ? "#90EE90" : "#FFFFFF";
+  }
   return (
     <div
+      style={{ backgroundColor: getBackGroundColour() }}
       className="w-[100%] min-w-[1/7] text-center border border-gray-400"
       data-day={props.date}
       onClick={(e) => {
@@ -88,10 +127,13 @@ export const HabitCell = (props: { date: Date; habitID: number }) => {
             props.habitID
           } `
         );
-        setCheckedOff((prev) => !prev);
+        console.log("Adding to DB");
+        addAHabitDoLog(props.habitID, props.date, props.checked);
+
+        //setCheckedOff((prev) => !prev);
       }}
     >
-      {checkedOff ? "✔️" : "X"}
+      {props.checked ? "✔️" : " "}
     </div>
   );
 };

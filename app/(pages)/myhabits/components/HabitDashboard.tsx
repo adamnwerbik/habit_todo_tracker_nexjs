@@ -25,28 +25,33 @@ const HabitDashboard = (props: any) => {
   }
   const { data, error, isLoading } = useSWR(props.userID, fetcher);
 
-  return (
-    <div>
-      <div className="text-center flex flex-col items-center">
-        <h1>Your habits</h1>
-        <HabitAdderForm userID={props.userID} />
+  if (!isLoading) {
+    return (
+      <div>
+        <div className="text-center flex flex-col items-center">
+          <h1>Your habits</h1>
+          <HabitAdderForm userID={props.userID} />
+        </div>
+        <br></br>
+        <HabitHeader startingDate={dateToday} />
+        {data
+          ? data.map((h: any) => {
+              return (
+                <HabitRow
+                  key={h.id}
+                  startingDate={dateToday}
+                  habitName={h.habitName}
+                  habitID={h.id}
+                  repeatsEveryXdays={h.repeatsEveryXdays}
+                />
+              );
+            })
+          : ""}
       </div>
-      <br></br>
-      <HabitHeader startingDate={dateToday} />
-      {data
-        ? data.map((h: any) => {
-            return (
-              <HabitRow
-                key={h.id}
-                startingDate={dateToday}
-                habitName={h.habitName}
-                habitID={h.id}
-              />
-            );
-          })
-        : ""}
-    </div>
-  );
+    );
+  } else {
+    return "Loading...";
+  }
 };
 
 export default HabitDashboard;
