@@ -1,8 +1,8 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
 import { redirect } from "next/navigation";
-
-import React from "react";
+import { ClipLoader } from "react-spinners";
+import React, { Suspense } from "react";
 import HabitAdderForm from "./HabitAdderForm";
 import { add } from "date-fns";
 import { fetchAUsersHabitsSB } from "./serverFunctions";
@@ -26,35 +26,40 @@ const HabitDashboard = (props: any) => {
   }
   const { data, error, isLoading } = useSWR(props.userID, fetcher);
 
-  if (!isLoading) {
-    return (
-      <div>
-        <div className="text-center flex flex-col items-center">
-          <h1>Your habits 🌱</h1>
-          <HabitAdderForm userID={props.userID} />
-        </div>
-        <br></br>
-        <HabitHeader startingDate={dateToday} />
-        {data
-          ? data.map((h: any) => {
-              return (
-                <HabitRow
-                  key={h.id}
-                  startingDate={dateToday}
-                  habitName={h.habitName}
-                  habitID={h.id}
-                  repeatsEveryXdays={h.repeatsEveryXdays}
-                />
-              );
-            })
-          : ""}
-        <HabitTooltip />
-        <div></div>
+  return (
+    <div className="text-center">
+      <div className="text-center flex flex-col items-center">
+        <h1>Your habits 🌱</h1>
+        <HabitAdderForm userID={props.userID} />
       </div>
-    );
-  } else {
-    return "Loading...";
-  }
+      <br></br>
+      <HabitHeader startingDate={dateToday} />
+
+      {isLoading ? (
+        <div className="mt-3">
+          <ClipLoader color="#358960" />
+          <p>loading habits....</p>
+        </div>
+      ) : data ? (
+        data.map((h: any) => {
+          return (
+            <HabitRow
+              key={h.id}
+              startingDate={dateToday}
+              habitName={h.habitName}
+              habitID={h.id}
+              repeatsEveryXdays={h.repeatsEveryXdays}
+            />
+          );
+        })
+      ) : (
+        ""
+      )}
+
+      <HabitTooltip />
+      <div></div>
+    </div>
+  );
 };
 
 export default HabitDashboard;
