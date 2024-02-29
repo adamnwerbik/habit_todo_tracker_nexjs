@@ -1,36 +1,35 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import ActivityCalendar from "react-activity-calendar";
+import HabitStrength from "./HabitStrength";
+import HabitStats from "./HabitStats";
+import HabitActivityCalendar from "./HabitActivityCalendar";
+import HabitInfoGreet from "./HabitInfoGreet";
+import { getHabitNameOffID } from "./serverFns";
+import { createClient } from "@/utils/supabase/client";
+
+async function getNameFromHabitID(id: number) {
+  const sb = createClient();
+  const {
+    data: { user },
+  } = await sb.auth.getUser();
+  const { data, error } = await sb.from("habits").select("name").eq("id", id);
+  return data;
+}
 
 const HabitOverviewDashboard = (props: { id: number }) => {
   return (
-    <div className="border border-gray-400 rounded-md text-center">
-      <h1>Info about your habit with ID {props.id}</h1>
-
-      <p>Score</p>
-      <p>Total entries</p>
-      <p>Total days covered</p>
-      <p>Longest streak</p>
-      <p>Calendar github commit style?</p>
-      <p>Options to delete/Edit?</p>
-      <div className="max-w-md">
-        <ActivityCalendar
-          weekStart={1}
-          maxLevel={2}
-          hideColorLegend={true}
-          hideTotalCount={false}
-          showWeekdayLabels={true}
-          data={[
-            { date: "2024-01-01", count: 1, level: 1 },
-            { date: "2024-03-20", count: 1, level: 1 },
-
-            { date: "2024-12-31", count: 1, level: 1 },
-          ]}
-          theme={{
-            light: ["hsl(0, 0%, 92%)", "firebrick"],
-            dark: ["#333", "rgb(214, 16, 174)"],
-          }}
-        />
+    <div className="border border-gray-400 rounded-md text-center max-w-sm md:max-w-[600px] lg:max-w-[800px]">
+      <h1>Hi</h1>
+      <div className="flex flex-row justify-between mx-8 md:mx-16 lg:mx-32">
+        <HabitStrength />
+        <div></div>
+        <HabitStats />
       </div>
+      <div className="flex flex-row justify-center pt-2">
+        <HabitActivityCalendar />
+      </div>
+      <div>Edit or delete</div>
     </div>
   );
 };
