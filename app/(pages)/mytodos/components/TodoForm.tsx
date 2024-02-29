@@ -42,7 +42,7 @@ const TodoForm = (props: any) => {
             details: formInputs.taskDetails,
             due_date: formInputs.dueDate,
             due_time: formInputs.dueTime,
-            is_starred: formInputs.isStarred === true ? true : false,
+            is_starred: formInputs.isStarred,
           },
         ]),
         rollbackOnError: true,

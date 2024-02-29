@@ -8,6 +8,7 @@ import { add } from "date-fns";
 import { fetchAUsersHabitsSB } from "./serverFunctions";
 import { HabitHeader, HabitRow } from "./HabitRow";
 import useSWR from "swr";
+import HabitTooltip from "./HabitTooltip";
 
 const HabitDashboard = (props: any) => {
   // SB client and redirect if not logged in
@@ -47,6 +48,8 @@ const HabitDashboard = (props: any) => {
               );
             })
           : ""}
+        <HabitTooltip />
+        <div></div>
       </div>
     );
   } else {
