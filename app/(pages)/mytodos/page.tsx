@@ -16,9 +16,10 @@ export default async function page() {
     return redirect("/login");
   }
 
+  //{user.email}
   return (
     <>
-      <h1>Your todos, {user.email}!</h1>
+      <h1>Your todos!</h1>
       <TodoForm />
       <UserTodos />
     </>
