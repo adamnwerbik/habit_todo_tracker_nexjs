@@ -5,6 +5,7 @@ import ActivityCalendar from "react-activity-calendar";
 import { add, format, parse, parseISO } from "date-fns";
 const arraySort = require("array-sort");
 import { summary } from "date-streaks";
+import Gauge from "./Gauge";
 
 const HabitOverviewDash = async (props: any) => {
   const sb = createClient();
@@ -47,12 +48,17 @@ const HabitOverviewDash = async (props: any) => {
   const summaryOfHabitEntries = summary({ dates: datesActivityDone });
 
   return (
-    <div className="border border-black min-w-sm md:min-w-[550px] lg:min-w-[750px] xl:min-w-[1000px]">
+    <div className=" min-w-sm md:min-w-[550px] lg:min-w-[750px] xl:min-w-[1000px]">
       <h1>user: {props.user.id}</h1>
       <h2>ayya</h2>
-      <div className="flex flex-col md:flex-row w-full items-center justify-evenly flex flex-col text-center">
-        <div className="size-64 rounded-md border border-gray-200 shadow-sm bg-gray-100 "></div>
-        <div className="size-64 rounded-md border border-gray-200 shadow-sm justify-evenly flex flex-col text-center bg-gray-100">
+      <div className="flex flex-col md:flex-row w-full items-center justify-evenly  text-center">
+        <div className="size-64 rounded-md border border-gray-300 shadow-sm bg-gray-50 ">
+          <div className="mt-7 mx-10">
+            <Gauge value={96} />
+          </div>
+          <h1>Habit Strength</h1>
+        </div>
+        <div className="size-64 rounded-md border border-gray-300 shadow-sm justify-evenly flex flex-col text-center bg-gray-50">
           <h1>
             <span className="font-bold">
               {summaryOfHabitEntries.currentStreak}{" "}
