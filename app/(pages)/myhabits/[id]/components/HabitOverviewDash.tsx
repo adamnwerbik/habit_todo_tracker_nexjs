@@ -4,6 +4,7 @@ import HabitActivityCalendar from "./HabitActivityCalendar";
 import ActivityCalendar from "react-activity-calendar";
 import { add, format, parse, parseISO } from "date-fns";
 const arraySort = require("array-sort");
+import { summary } from "date-streaks";
 
 const HabitOverviewDash = async (props: any) => {
   const sb = createClient();
@@ -23,39 +24,54 @@ const HabitOverviewDash = async (props: any) => {
     { date: "2024-12-31", count: 0, level: 0 },
   ];
 
-  console.log("yaya");
-  console.log(props.repeatsDays);
-
-  console.log(habitDoLog ? habitDoLog[0] : "");
-  const daysDone: any = [];
-
+  const datesActivityDone: string[] = [];
   habitDoLog?.forEach((e) => {
-    daysDone.push(e.dateDone);
     dates.push({ date: e.dateDone, count: 1, level: 2 });
-    let whichItCovers: any = [];
+    datesActivityDone.push(e.dateDone);
+  });
+  habitDoLog?.forEach((e) => {
     for (let i = 1; i < props.repeatsDays; i++) {
-      whichItCovers.push(format(add(e.dateDone, { days: i }), "yyyy-MM-dd"));
+      let candidateDate = format(add(e.dateDone, { days: i }), "yyyy-MM-dd");
+      if (datesActivityDone.includes(candidateDate)) {
+        ("");
+      } else {
+        dates.push({ date: candidateDate, count: 0, level: 1 });
+        datesActivityDone.push(candidateDate);
+      }
     }
-    console.log(whichItCovers);
-    console.log("///////");
-    whichItCovers.forEach((e: any) => {
-      daysDone.includes(e) ? "" : dates.push({ date: e, count: 0, level: 1 });
-    });
   });
 
   arraySort(dates, ["date"]);
+  arraySort(datesActivityDone, ["date"]);
 
-  console.log(dates);
+  const summaryOfHabitEntries = summary({ dates: datesActivityDone });
+
   return (
     <div className="border border-black min-w-sm md:min-w-[550px] lg:min-w-[750px] xl:min-w-[1000px]">
       <h1>user: {props.user.id}</h1>
       <h2>ayya</h2>
-      <div className="flex flex-col md:flex-row w-full items-center justify-evenly">
-        <div className="bg-blue-50 size-64"></div>
-        <div className="bg-red-50 size-64">{daysDone.length} Days done</div>
+      <div className="flex flex-col md:flex-row w-full items-center justify-evenly flex flex-col text-center">
+        <div className="size-64 rounded-md border border-gray-200 shadow-sm bg-gray-100 "></div>
+        <div className="size-64 rounded-md border border-gray-200 shadow-sm justify-evenly flex flex-col text-center bg-gray-100">
+          <h1>
+            <span className="font-bold">
+              {summaryOfHabitEntries.currentStreak}{" "}
+            </span>
+            Current Streak
+          </h1>
+          <h1>
+            <span className="font-bold">
+              {summaryOfHabitEntries.longestStreak}
+            </span>{" "}
+            Longest Streak
+          </h1>
+          <h1>
+            <span className="font-bold">{dates.length - 2}</span> Dates Covered
+          </h1>
+        </div>
       </div>
       <div
-        className="text-center items-center overflow-scroll mix-w-sm pt-5"
+        className="text-center items-center overflow-scroll pt-5  max-w-sm md:max-w-[550px] lg:max-w-[750px] xl:max-w-[1000px]"
         style={{ scrollbarWidth: "none" }}
       >
         <ActivityCalendar
