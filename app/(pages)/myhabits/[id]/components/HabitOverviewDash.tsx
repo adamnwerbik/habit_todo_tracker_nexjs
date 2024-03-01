@@ -1,6 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
 import React from "react";
-import HabitActivityCalendar from "./HabitActivityCalendar";
 import ActivityCalendar from "react-activity-calendar";
 import { add, format, parse, parseISO } from "date-fns";
 const arraySort = require("array-sort");

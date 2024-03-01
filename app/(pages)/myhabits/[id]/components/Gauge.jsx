@@ -2,7 +2,7 @@
 import React from "react";
 import { SimpleGauge } from "react-gauges";
 
-const Gauge = (props: any) => {
+const Gauge = (props) => {
   return (
     <SimpleGauge
       value={props.value}
