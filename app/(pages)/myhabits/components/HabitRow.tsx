@@ -76,6 +76,7 @@ export const HabitRow = (props: {
               add(props.startingDate, { days: -d }),
               "yyyy-MM-dd"
             );
+            //console.log(date);
             var checked = false;
             if (datesDonesYYYYMMDD.includes(date)) {
               var checked = true;
@@ -87,10 +88,10 @@ export const HabitRow = (props: {
                 try {
                   datesCovered.push(
                     format(
-                      add(parse(dateDone, "yyyy-mm-dd", new Date()), {
+                      add(parse(dateDone, "yyyy-MM-dd", new Date()), {
                         days: i,
                       }),
-                      "yyyy-mm-dd"
+                      "yyyy-MM-dd"
                     )
                   );
                 } catch {}

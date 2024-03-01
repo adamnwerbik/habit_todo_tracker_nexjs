@@ -46,6 +46,13 @@ const UserTodos = () => {
             </div>
           ) : (
             <div className="mt-2">
+              <Image
+                src={"Completed-pana.svg"}
+                alt="All tasks completed graphic"
+                height={400}
+                width={400}
+                className="opacity-35"
+              />
               <p>You have no todos. Add some with the form above!</p>
             </div>
           )}
@@ -56,10 +63,11 @@ const UserTodos = () => {
                 onClick={(e) => {
                   setViewCompleted(!viewCompleted);
                 }}
+                className="flex flex-row"
               >
                 <MdArrowDropDown size={25} />
+                <p>Completed todos ({completedTasksData.length})</p>
               </button>
-              <p>Completed todos ({completedTasksData.length})</p>
             </div>
             {viewCompleted ? (
               <div>

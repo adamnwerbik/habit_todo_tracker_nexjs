@@ -11,10 +11,7 @@ const Navbar = () => {
   return (
     <nav className=" border-gray-200 min-w-full">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a
-          href="/myhabits"
-          className="flex items-center space-x-3 rtl:space-x-reverse"
-        >
+        <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
             habbitTracker🌱
           </span>
