@@ -9,7 +9,7 @@ const Navbar = () => {
   const supabase = createClient();
 
   return (
-    <nav className=" border-gray-200 dark:bg-gray-900 dark:border-gray-700 min-w-full">
+    <nav className=" border-gray-200 min-w-full">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a
           href="/myhabits"
