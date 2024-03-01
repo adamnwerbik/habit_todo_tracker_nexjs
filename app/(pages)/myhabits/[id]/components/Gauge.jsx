@@ -1,3 +1,4 @@
+/*
 "use client";
 import React from "react";
 import { SimpleGauge } from "react-gauges";
@@ -15,3 +16,4 @@ const Gauge = (props) => {
 };
 
 export default Gauge;
+*/
