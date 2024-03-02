@@ -64,3 +64,25 @@ export async function setATodoAsComplete(id: number) {
     .select();
   return await fetcher();
 }
+
+export async function addATaskToSB(todo: Todo) {
+  const sb = createClient();
+  const {
+    data: { user },
+  } = await sb.auth.getUser();
+  const { data, error } = await sb
+    .from("todos")
+    .insert([
+      {
+        todoName: todo.todoName,
+        todoDetails: todo.todoDetails,
+        dateDue: todo.dateDue ? todo.dateDue : null,
+        timeDue: todo.timeDue ? todo.timeDue : null,
+        isStarred: todo.isStarred,
+        createdByUserFK: user?.id,
+      },
+    ])
+    .select();
+  console.log(error);
+  return await fetcher();
+}

@@ -6,11 +6,13 @@ import TodoCard from "./TodoCard";
 import { MdArrowDropDown } from "react-icons/md";
 import { fetcher } from "./serverFns";
 import Image from "next/image";
+import { BarLoader } from "react-spinners";
+import TodoForm from "./TodoAdderForm";
 
 // Types
 export type Todo = {
   todoName: string;
-  id: number;
+  id?: number;
   created_at?: string;
   createdByUserFK?: string;
   todoDetails?: string;
@@ -23,11 +25,14 @@ export type Todo = {
 const TodoOverview = () => {
   const [seeCompleted, setSeeCompleted] = useState(false);
   const { data, isLoading, error } = useSWR("userTodos", fetcher);
+
+  //
+
   // If todos are loading
   if (isLoading) {
     return (
-      <div className="text-center">
-        <h1>Loading todos </h1>
+      <div className="flex flex-col items-center text-center mt-5">
+        <BarLoader color="#36d7b7" />
       </div>
     );
   }
@@ -48,6 +53,7 @@ const TodoOverview = () => {
 
   return (
     <>
+      <TodoForm />
       <div className="flex flex-col items-center text-center">
         {incompletedTodosOnly.map((d) => (
           <TodoCard data={d} key={d.id} />
