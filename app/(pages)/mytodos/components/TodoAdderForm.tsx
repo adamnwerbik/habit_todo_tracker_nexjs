@@ -32,9 +32,9 @@ const TodoForm = (props: any) => {
           {
             todoName: formInputs.todoName,
             todoDetails: formInputs.todoDetails,
+            isStarred: formInputs.isStarred,
             dateDue: formInputs.dateDue,
             timeDue: formInputs.timeDue,
-            isStarred: formInputs.isStarred === "true" ? true : false,
           },
         ]),
         rollbackOnError: true,

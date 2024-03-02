@@ -70,10 +70,12 @@ export async function addATaskToSB(todo: Todo) {
   const {
     data: { user },
   } = await sb.auth.getUser();
+  console.log(todo);
   const { data, error } = await sb
     .from("todos")
     .insert([
       {
+        //Issues with isStarred from form component :(
         todoName: todo.todoName,
         todoDetails: todo.todoDetails,
         dateDue: todo.dateDue ? todo.dateDue : null,
