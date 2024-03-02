@@ -12,8 +12,8 @@ const page = async () => {
     return redirect("/login");
   }
   return (
-    <div className="text-center items-center">
-      <h1>Your todos</h1>
+    <div className="flex flex-col text-center items-center">
+      <h1>Your todos 📋</h1>
       <TodoOverview />
     </div>
   );

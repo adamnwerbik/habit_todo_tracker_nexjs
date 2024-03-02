@@ -141,12 +141,18 @@ const TodoCard = (props: { data: Todo }) => {
   }
 
   return (
-    <div className="overflow-hidden max-w-sm min-w-96 min-h-16 m-2 flex flex-row bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <div className="overflow-hidden max-w-sm min-w-full sm:min-w-96 min-h-16 m-2 flex flex-row bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
       <div className="bg-white w-2/12 items-center flex justify-center">
         {props.data.isCompleted ? (
-          <RiCheckboxCircleLine onClick={(e) => handleClickToUnComplete()} />
+          <RiCheckboxCircleLine
+            onClick={(e) => handleClickToUnComplete()}
+            size={20}
+          />
         ) : (
-          <RiCheckboxBlankCircleLine onClick={(e) => handleClickToComplete()} />
+          <RiCheckboxBlankCircleLine
+            onClick={(e) => handleClickToComplete()}
+            size={20}
+          />
         )}
       </div>
       <div className="bg-white w-8/12 flex flex-col text-center justify-center">

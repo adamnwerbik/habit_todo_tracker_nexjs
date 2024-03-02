@@ -5,6 +5,7 @@ import useSWR from "swr";
 import TodoCard from "./TodoCard";
 import { MdArrowDropDown } from "react-icons/md";
 import { fetcher } from "./serverFns";
+import Image from "next/image";
 
 // Types
 export type Todo = {
@@ -26,7 +27,7 @@ const TodoOverview = () => {
   if (isLoading) {
     return (
       <div className="text-center">
-        <p>Loading todos</p>
+        <h1>Loading todos </h1>
       </div>
     );
   }
@@ -47,10 +48,25 @@ const TodoOverview = () => {
 
   return (
     <>
-      <div className="">
+      <div className="flex flex-col items-center text-center">
         {incompletedTodosOnly.map((d) => (
           <TodoCard data={d} key={d.id} />
         ))}
+
+        {incompletedTodosOnly.length ? (
+          ""
+        ) : (
+          <div className="flex flex-col">
+            <Image
+              src={"Completed-pana.svg"}
+              alt="All tasks completed graphic"
+              height={20}
+              width={20}
+              className="opacity-35 size-[300px] md:size-[400px]"
+            />
+            <h1>You have no pending todos! Yay!</h1>
+          </div>
+        )}
       </div>
       <div className="flex flex-col items-center text-center">
         <button
