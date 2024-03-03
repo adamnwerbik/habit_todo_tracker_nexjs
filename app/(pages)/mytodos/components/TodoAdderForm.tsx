@@ -25,6 +25,7 @@ const TodoForm = (props: any) => {
   const onSubmit: SubmitHandler<Todo> = async (formInputs) => {
     try {
       setWantsToAddTask(false);
+      console.log("FORM INPUTS BELOW");
       console.log(formInputs);
       await mutate("userTodos", addATaskToSB(formInputs), {
         optimisticData: SortByStarThenDateDueThenTime([
@@ -32,7 +33,7 @@ const TodoForm = (props: any) => {
           {
             todoName: formInputs.todoName,
             todoDetails: formInputs.todoDetails,
-            isStarred: formInputs.isStarred,
+            isStarred: formInputs.isStarred ? true : false,
             dateDue: formInputs.dateDue,
             timeDue: formInputs.timeDue,
           },
@@ -101,7 +102,7 @@ const TodoForm = (props: any) => {
             <input {...register("timeDue")} type="time" />
             <label>Importance (optional):</label>
             <select {...register("isStarred")}>
-              <option value="false">Normal</option>
+              <option value="">Normal</option>
               <option value="true">High ⭐</option>
             </select>
             {taskName ? (

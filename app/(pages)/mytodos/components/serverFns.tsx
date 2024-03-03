@@ -80,7 +80,7 @@ export async function addATaskToSB(todo: Todo) {
         todoDetails: todo.todoDetails,
         dateDue: todo.dateDue ? todo.dateDue : null,
         timeDue: todo.timeDue ? todo.timeDue : null,
-        isStarred: todo.isStarred,
+        isStarred: todo.isStarred ? true : false,
         createdByUserFK: user?.id,
       },
     ])
