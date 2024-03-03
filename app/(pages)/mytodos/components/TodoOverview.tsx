@@ -12,7 +12,7 @@ import TodoForm from "./TodoAdderForm";
 // Types
 export type Todo = {
   todoName: string;
-  id?: number;
+  id: number;
   created_at?: string;
   createdByUserFK?: string;
   todoDetails?: string;

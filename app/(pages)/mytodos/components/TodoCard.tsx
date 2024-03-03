@@ -5,6 +5,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import {
   RiCheckboxBlankCircleLine,
   RiCheckboxCircleLine,
+  RiCheckboxCircleFill,
 } from "react-icons/ri";
 import { GoStar, GoStarFill } from "react-icons/go";
 import useSWR, { useSWRConfig } from "swr";
@@ -144,7 +145,7 @@ const TodoCard = (props: { data: Todo }) => {
     <div className="overflow-hidden max-w-sm min-w-full sm:min-w-96 min-h-16 m-2 flex flex-row bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
       <div className="bg-white w-2/12 items-center flex justify-center">
         {props.data.isCompleted ? (
-          <RiCheckboxCircleLine
+          <RiCheckboxCircleFill
             onClick={(e) => handleClickToUnComplete()}
             size={20}
           />
