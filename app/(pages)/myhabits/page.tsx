@@ -5,7 +5,7 @@ const page = () => {
   return (
     <div className="flex flex-col text-center items-center">
       <h1>Your habits 🌱</h1>
-      <HabitDashboard />
+      <HabitDashboard startingDate={new Date()} />
     </div>
   );
 };
