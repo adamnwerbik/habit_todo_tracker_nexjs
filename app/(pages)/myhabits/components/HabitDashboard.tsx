@@ -6,6 +6,7 @@ import useSWR, { useSWRConfig } from "swr";
 import { Habit, addAHabitDoLog, fetcher, fetcherHabitDoLog } from "./ServerFns";
 import Link from "next/link";
 import { BarLoader } from "react-spinners";
+import { GrCheckmark } from "react-icons/gr";
 
 export const HeaderRow = (props: { startingDate: Date }) => {
   const dates = [];
@@ -49,7 +50,7 @@ export const HabitCell = (props: {
   return (
     <div
       style={{ backgroundColor: getBackGroundColour() }}
-      className="w-[100%] min-w-[1/7] text-center border border-gray-400"
+      className="w-[100%] min-w-[1/7] text-center border border-gray-400 justify-evenly flex flex-col "
       data-day={props.dateForCell}
       onClick={async (e) => {
         console.log(
