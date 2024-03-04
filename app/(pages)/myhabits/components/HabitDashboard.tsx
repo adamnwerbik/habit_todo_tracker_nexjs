@@ -5,6 +5,7 @@ import HabitAdderForm from "./HabitAdderForm";
 import useSWR, { useSWRConfig } from "swr";
 import { Habit, addAHabitDoLog, fetcher, fetcherHabitDoLog } from "./ServerFns";
 import Link from "next/link";
+import { BarLoader } from "react-spinners";
 
 export const HeaderRow = (props: { startingDate: Date }) => {
   const dates = [];
@@ -170,7 +171,10 @@ export default function HabitDashboard(props: { startingDate: Date }) {
       <div className="min-w-96 flex flex-col items-center text-center">
         <HabitAdderForm />
         <HeaderRow startingDate={new Date()} />
-        Loading habits...
+        <div className="mt-5">
+          <BarLoader color="#36d7b7" />
+        </div>
+        <p>Loading...</p>
       </div>
     );
   }
