@@ -41,3 +41,41 @@ export const fetcher: any = async (url: string) => {
     .eq("createdByUserFK", user?.id);
   return habits;
 };
+
+export const fetcherHabitDoLog = async (habitID: string) => {
+  const sb = createClient();
+  let { data: HabitDoLog, error } = await sb
+    .from("HabitDoLog")
+    .select("*")
+    .eq("habitFK", habitID);
+  return HabitDoLog;
+};
+
+export async function addAHabitDoLog(
+  habitID: number,
+  date: string,
+  checked: boolean
+) {
+  const sb = createClient();
+  const {
+    data: { user },
+  } = await sb.auth.getUser();
+  if (!user) {
+    return;
+  }
+  if (checked) {
+    console.log("DELETING");
+    const { error } = await sb
+      .from("HabitDoLog")
+      .delete()
+      .eq("habitFK", habitID)
+      .eq("dateDone", date);
+  } else {
+    const { data, error } = await sb
+      .from("HabitDoLog")
+      .insert([{ habitFK: habitID, dateDone: date, userFK: user.id }])
+      .select();
+    //console.log(error);
+  }
+  return fetcherHabitDoLog(habitID.toString());
+}
