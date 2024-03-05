@@ -5,6 +5,8 @@ import useSWR from "swr";
 import ActivityCal from "./ActivityCal";
 import { add, format } from "date-fns";
 import { summary } from "date-streaks";
+import { Gauge } from "react-circular-gauge";
+import { Activity } from "react-activity-calendar";
 
 export default function HabitSummary(props: {
   habitID: number;
@@ -16,7 +18,7 @@ export default function HabitSummary(props: {
   );
   var arraySort = require("array-sort");
 
-  const dates = [
+  const dates: Activity[] = [
     { date: "2024-01-01", count: 0, level: 0 },
     { date: "2024-12-31", count: 0, level: 0 },
   ];
@@ -42,18 +44,60 @@ export default function HabitSummary(props: {
   arraySort(dates, ["date"]);
   arraySort(datesActivityDone, ["date"]);
 
-  const summaryOfHabitEntries = summary({ dates: datesActivityDone });
+  function scoreHabits(dates: Activity[]) {
+    const dateToday = format(new Date(), "yyyy-MM-dd");
+    const datesInLast7Days: string[] = [];
+    const datesInLast30Days: string[] = [];
 
+    for (let i = 1; i < 8; i++) {
+      datesInLast7Days.push(format(add(dateToday, { days: -i }), "yyyy-MM-dd"));
+    }
+    for (let i = 1; i < 31; i++) {
+      datesInLast30Days.push(
+        format(add(dateToday, { days: -i }), "yyyy-MM-dd")
+      );
+    }
+    let countLast7 = 0;
+    let countLast30 = 0;
+    dates.forEach((d) => {
+      if (datesInLast7Days.includes(d.date)) {
+        countLast7++;
+      }
+      if (datesInLast30Days.includes(d.date)) {
+        countLast30++;
+      }
+    });
+    return (countLast30++ / 30 + countLast7 / 7) * 50;
+  }
+
+  const summaryOfHabitEntries = summary({ dates: datesActivityDone });
+  scoreHabits(dates);
   return (
     <div>
       <h1>Summary: {props.habitData[0].habitName}</h1>
       <div className="flex flex-col md:flex-row justify-evenly items-center md:min-w-[700px] lg:min-w-[800px]">
         <div className="size-48 m-2 rounded-md border-gray-200 border shadow">
-          GRAPH
+          <div className="p-5">
+            <Gauge
+              value={scoreHabits(dates)}
+              minValue={0}
+              maxValue={100}
+              arcWidth={0.11}
+              trackWidth={0.03}
+              arcColor={"#358960"}
+              trackColor={"#E5E7EB"}
+              animated={true}
+              renderTopLabel={"Habit Strength"}
+              topLabelStyle={{ fontSize: 15 }}
+            />
+          </div>
         </div>
         <div className="size-48 m-2 rounded-md border-gray-200 border shadow">
           <div className="flex flex-col justify-evenly h-full text-xl">
-            <div>{summaryOfHabitEntries.currentStreak} Current Streak</div>
+            <div>
+              {summaryOfHabitEntries.currentStreak}
+              Current Streak
+            </div>
             <div>{summaryOfHabitEntries.longestStreak} Longest Streak</div>
             <div>{dates.length - 2} Days covered</div>
           </div>
@@ -61,6 +105,10 @@ export default function HabitSummary(props: {
       </div>
       <div className="overflow-hidden mt-4">
         <ActivityCal dates={dates} />
+      </div>
+      <div>
+        <div>EDIT</div>
+        <div>DELETE</div>
       </div>
     </div>
   );
