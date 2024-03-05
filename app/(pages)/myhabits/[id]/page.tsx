@@ -1,7 +1,8 @@
-import React, { Suspense } from "react";
-import HabitOverviewDash from "./components/HabitOverviewDash";
+import React from "react";
+import HabitSummary from "./HabitSummary";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { Habit } from "../components/ServerFns";
 
 const page = async ({ params }: { params: { id: number } }) => {
   const sb = createClient();
@@ -9,25 +10,30 @@ const page = async ({ params }: { params: { id: number } }) => {
     data: { user },
   } = await sb.auth.getUser();
 
-  //check if user createdHabit
-  const { data, error } = await sb
+  let { data: habits, error } = await sb
     .from("habits")
     .select("*")
-    .eq("createdByUser", user?.id)
     .eq("id", params.id);
 
-  // not redirect user if habitID is created by same user as logged in rn
-  data?.length ? "" : redirect("/");
-
-  const habitRepeatsEvery = data ? data[0].repeatsEveryXdays : null;
+  if (error) {
+    redirect("/myhabits");
+  }
+  if (habits && user) {
+    if (habits[0].createdByUserFK !== user.id) {
+      redirect("/myhabits");
+    }
+  }
 
   return (
-    <div>
-      <HabitOverviewDash
-        user={user}
-        habitID={params.id}
-        repeatsDays={habitRepeatsEvery}
-      />
+    <div
+      className="flex flex-col text-center max-w-full"
+      style={{ scrollbarWidth: "none" }}
+    >
+      {habits ? (
+        <HabitSummary habitID={params.id} habitData={habits} />
+      ) : (
+        <div>NO DATA</div>
+      )}
     </div>
   );
 };

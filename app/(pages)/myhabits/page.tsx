@@ -1,21 +1,13 @@
-import { redirect } from "next/navigation";
+import React from "react";
 import HabitDashboard from "./components/HabitDashboard";
-import { createClient } from "@/utils/supabase/server";
 
-//components
+const page = () => {
+  return (
+    <div className="flex flex-col text-center items-center">
+      <h1>Your habits 🌱</h1>
+      <HabitDashboard startingDate={new Date()} />
+    </div>
+  );
+};
 
-export default async function page() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return redirect("/login");
-  } else {
-    return (
-      <div>
-        <HabitDashboard userID={user.id} />
-      </div>
-    );
-  }
-}
+export default page;

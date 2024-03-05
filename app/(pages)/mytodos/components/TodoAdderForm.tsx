@@ -4,10 +4,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useSWRConfig } from "swr";
 import useSWR from "swr";
 import { useEffect, useState } from "react";
-import { addTodoToSB, fetcher, sortByFavThenTime2 } from "./helperFunctions";
 import { MdOutlineAddTask } from "react-icons/md";
 import { IoCloseOutline } from "react-icons/io5";
-import { SWRConfig } from "swr";
+import { SortByStarThenDateDueThenTime } from "./TodoCard";
+import { addATaskToSB } from "./serverFns";
+import { Todo } from "./TodoOverview";
 
 const TodoForm = (props: any) => {
   const [wantsToAddTask, setWantsToAddTask] = useState(false);
@@ -15,34 +16,26 @@ const TodoForm = (props: any) => {
   const { mutate } = useSWRConfig();
   const { data } = useSWR("userTodos");
 
-  //Form Stuff
-  type Inputs = {
-    taskName: string;
-    taskDetails: string;
-    dueDate: string;
-    dueTime: string;
-    isStarred: boolean;
-  };
-
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitSuccessful },
     reset,
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async (formInputs) => {
+  } = useForm<Todo>();
+  const onSubmit: SubmitHandler<Todo> = async (formInputs) => {
     try {
       setWantsToAddTask(false);
+      console.log("FORM INPUTS BELOW");
       console.log(formInputs);
-      await mutate("userTodos", addTodoToSB(formInputs), {
-        optimisticData: sortByFavThenTime2([
+      await mutate("userTodos", addATaskToSB(formInputs), {
+        optimisticData: SortByStarThenDateDueThenTime([
           ...data,
           {
-            name: formInputs.taskName,
-            details: formInputs.taskDetails,
-            due_date: formInputs.dueDate,
-            due_time: formInputs.dueTime,
-            is_starred: formInputs.isStarred,
+            todoName: formInputs.todoName,
+            todoDetails: formInputs.todoDetails,
+            isStarred: formInputs.isStarred ? true : false,
+            dateDue: formInputs.dateDue,
+            timeDue: formInputs.timeDue,
           },
         ]),
         rollbackOnError: true,
@@ -78,39 +71,39 @@ const TodoForm = (props: any) => {
             className="flex flex-col max-w-sm"
           >
             <input
-              {...register("taskName", { required: true })}
+              {...register("todoName", { required: true })}
               placeholder="Task title..."
               onChange={(e) => {
                 setTaskName(e.target.value);
               }}
             />
 
-            {errors.taskName && (
+            {errors.todoName && (
               <p role="alert" className="text-red-400">
                 {"⚠️ A title is required."}
               </p>
             )}
 
             <input
-              {...register("taskDetails")}
+              {...register("todoDetails")}
               placeholder="Details (optional)"
             />
 
             <input
-              {...register("dueDate", { min: "2024-01-02" })}
+              {...register("dateDue", { min: "2024-01-02" })}
               type="date"
             />
-            {errors.dueDate && (
+            {errors.dateDue && (
               <p role="alert" className="text-red-400">
                 {"⚠️ Date must be after Jan 1, 2024"}
               </p>
             )}
 
-            <input {...register("dueTime")} type="time" />
+            <input {...register("timeDue")} type="time" />
             <label>Importance (optional):</label>
             <select {...register("isStarred")}>
-              <option value="false">Normal</option>
-              <option value="true">High</option>
+              <option value="">Normal</option>
+              <option value="true">High ⭐</option>
             </select>
             {taskName ? (
               <input

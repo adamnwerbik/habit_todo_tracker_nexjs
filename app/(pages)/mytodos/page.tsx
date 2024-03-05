@@ -1,27 +1,22 @@
-import { createClient } from "@/utils/supabase/server";
+import React from "react";
+import TodoOverview from "./components/TodoOverview";
 import { redirect } from "next/navigation";
+import { createClient } from "@/utils/supabase/server";
 
-//components
-import TodoForm from "./components/TodoForm";
-import UserTodos from "./components/UserTodos";
-
-export default async function page() {
+const page = async () => {
   const supabase = createClient();
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
   if (!user) {
     return redirect("/login");
   }
-
-  //{user.email}
   return (
-    <>
-      <h1>Your todos!</h1>
-      <TodoForm />
-      <UserTodos />
-    </>
+    <div className="flex flex-col text-center items-center">
+      <h1>Your todos 📋</h1>
+      <TodoOverview />
+    </div>
   );
-}
+};
+
+export default page;

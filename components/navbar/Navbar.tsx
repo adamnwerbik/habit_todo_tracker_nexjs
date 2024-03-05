@@ -1,18 +1,12 @@
 import React from "react";
-import Link from "next/link";
-import AuthButton from "../AuthButton";
-import Image from "next/image";
-import { createClient } from "@/utils/supabase/server";
 import NavLinks from "./NavLinks";
 
 const Navbar = () => {
-  const supabase = createClient();
-
   return (
     <nav className=" border-gray-200 min-w-full">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+          <span className="self-center text-2xl font-semibold whitespace-nowrap ">
             habbitTracker🌱
           </span>
         </a>

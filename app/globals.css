@@ -2,11 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* do tomorrow */
-main {
-  background-image: none;
-}
-
 h1 {
-  font-size: x-large;
+  font-size: large;
+  font-weight: bold;
 }
