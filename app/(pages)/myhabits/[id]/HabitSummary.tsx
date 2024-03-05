@@ -74,7 +74,7 @@ export default function HabitSummary(props: {
   scoreHabits(dates);
   return (
     <div>
-      <h1>Summary: {props.habitData[0].habitName}</h1>
+      <h1>Habit: {props.habitData[0].habitName}</h1>
       <div className="flex flex-col md:flex-row justify-evenly items-center md:min-w-[700px] lg:min-w-[800px]">
         <div className="size-48 m-2 rounded-md border-gray-200 border shadow">
           <div className="p-5">
@@ -95,11 +95,20 @@ export default function HabitSummary(props: {
         <div className="size-48 m-2 rounded-md border-gray-200 border shadow">
           <div className="flex flex-col justify-evenly h-full text-xl">
             <div>
-              {summaryOfHabitEntries.currentStreak}
-              Current Streak
+              <span className="font-bold">
+                {summaryOfHabitEntries.currentStreak}
+              </span>
+              {" Current Streak"}
             </div>
-            <div>{summaryOfHabitEntries.longestStreak} Longest Streak</div>
-            <div>{dates.length - 2} Days covered</div>
+            <div>
+              <span className="font-bold">
+                {summaryOfHabitEntries.longestStreak}
+              </span>{" "}
+              Longest Streak
+            </div>
+            <div>
+              <span className="font-bold">{dates.length - 2}</span> Days covered
+            </div>
           </div>
         </div>
       </div>
@@ -107,8 +116,8 @@ export default function HabitSummary(props: {
         <ActivityCal dates={dates} />
       </div>
       <div>
-        <div>EDIT</div>
-        <div>DELETE</div>
+        <div>EDIT (Todo)</div>
+        <div>DELETE (Todo)</div>
       </div>
     </div>
   );

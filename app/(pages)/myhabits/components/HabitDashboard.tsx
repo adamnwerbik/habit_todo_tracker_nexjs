@@ -6,7 +6,7 @@ import useSWR, { useSWRConfig } from "swr";
 import { Habit, addAHabitDoLog, fetcher, fetcherHabitDoLog } from "./ServerFns";
 import Link from "next/link";
 import { BarLoader } from "react-spinners";
-import { GrCheckmark } from "react-icons/gr";
+import { ImCheckmark } from "react-icons/im";
 
 export const HeaderRow = (props: { startingDate: Date }) => {
   const dates = [];
@@ -25,6 +25,7 @@ export const HeaderRow = (props: { startingDate: Date }) => {
               <div
                 className="w-[100%] text-center border border-gray-400"
                 data-day={d}
+                key={`header-${d}`}
               >
                 {format(d, "EEE MMM dd")}
               </div>
@@ -50,7 +51,7 @@ export const HabitCell = (props: {
   return (
     <div
       style={{ backgroundColor: getBackGroundColour() }}
-      className="w-[100%] min-w-[1/7] text-center border border-gray-400 justify-evenly flex flex-col "
+      className="w-[100%] min-w-[1/7] text-center border border-gray-400 justify-evenly flex flex-col items-center"
       data-day={props.dateForCell}
       onClick={async (e) => {
         console.log(
@@ -99,7 +100,7 @@ export const HabitCell = (props: {
         //setCheckedOff((prev) => !prev);
       }}
     >
-      {props.checked ? "✔️" : " "}
+      {props.checked ? <ImCheckmark /> : " "}
     </div>
   );
 };
@@ -160,6 +161,7 @@ export function HabitRow(props: { habitData: Habit; startingDate: Date }) {
                 habitID={props.habitData.id ? props.habitData.id : -1}
                 checked={checked}
                 covered={datesCovered.includes(date) ? true : false}
+                key={`${props.habitData.id}_${date}`}
               />
             );
           })}
@@ -188,7 +190,7 @@ export default function HabitDashboard(props: { startingDate: Date }) {
       <HabitAdderForm />
       <HeaderRow startingDate={props.startingDate} />
       {data.map((e: Habit) => (
-        <HabitRow habitData={e} startingDate={props.startingDate} />
+        <HabitRow habitData={e} startingDate={props.startingDate} key={e.id} />
       ))}
       {data ? (
         <div>Tip: Click on a habit name to view stats and other info!</div>
