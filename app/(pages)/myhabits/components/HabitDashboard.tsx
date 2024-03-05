@@ -111,6 +111,10 @@ export function HabitRow(props: { habitData: Habit; startingDate: Date }) {
     fetcherHabitDoLog
   );
 
+  if (isLoading) {
+    return;
+  }
+
   const datesDonesYYYYMMDD: string[] = [];
   data?.map((i) => datesDonesYYYYMMDD.push(i.dateDone));
 

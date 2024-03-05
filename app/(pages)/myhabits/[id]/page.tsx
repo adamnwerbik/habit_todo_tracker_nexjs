@@ -1,7 +1,8 @@
 import React from "react";
-import HabitSummary from "../components/HabitSummary";
+import HabitSummary from "./HabitSummary";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { Habit } from "../components/ServerFns";
 
 const page = async ({ params }: { params: { id: number } }) => {
   const sb = createClient();
@@ -28,10 +29,11 @@ const page = async ({ params }: { params: { id: number } }) => {
       className="flex flex-col text-center max-w-full"
       style={{ scrollbarWidth: "none" }}
     >
-      <HabitSummary
-        habitID={params.id}
-        habitName={habits ? habits[0].habitName : ""}
-      />
+      {habits ? (
+        <HabitSummary habitID={params.id} habitData={habits} />
+      ) : (
+        <div>NO DATA</div>
+      )}
     </div>
   );
 };
