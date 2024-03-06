@@ -2,21 +2,28 @@
 
 import useSWR from "swr";
 import { fetchHabits, fetchLogData } from "./Fns";
+import HeaderRow from "./HeaderRow";
+import HabitRow from "./HabitRow";
 
 const page = () => {
-  const { data: habits } = useSWR("habits", fetchHabits);
-  const { data: log } = useSWR("log", fetchLogData);
-  return (
-    <div className="flex flex-row">
-      <h1>Page</h1>
-      <div className="bg-blue-100">
-        {habits ? habits.map((h) => <div>{h.habitName}</div>) : "N"}
-      </div>
-      <div className="bg-red-100">
-        {log ? log.map((h) => <div>yaya</div>) : "N"}
-      </div>
-    </div>
-  );
+  const { data: habits, error: habbitError } = useSWR("habits", fetchHabits);
+  const { data: log, error: logError } = useSWR("allUserLogs", fetchLogData);
+
+  if (habits && log) {
+    const habitIDs = new Set();
+    habits.map((h: any) => habitIDs.add(h.id));
+
+    return (
+      <>
+        <h1>Your habits </h1>
+
+        <HeaderRow startingDate={new Date()} />
+        {Array.from(habitIDs).map((h: any) => (
+          <HabitRow habitID={h} allHabitData={habits} allHabitLogData={log} />
+        ))}
+      </>
+    );
+  }
 };
 
 export default page;

@@ -1,0 +1,7 @@
+* habits
+
+CREATE POLICY "View records created by user." ON public.habits FOR
+SELECT
+  USING ("createdByUserFK" = auth.uid ());
+
+  
