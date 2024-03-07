@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { deleteAHabitByID } from "../components/ServerFns";
 import { useRouter } from "next/navigation";
+import { MdDeleteOutline } from "react-icons/md";
 
 const DeleteHabitButton = (props: { id: number }) => {
   const router = useRouter();
@@ -26,7 +27,10 @@ const DeleteHabitButton = (props: { id: number }) => {
           setWantsToDelete(true);
         }}
       >
-        Delete button
+        <div className="flex flex-row items-center justify-center">
+          <MdDeleteOutline size={20} />
+          <p className="ml-1">Edit Habit</p>
+        </div>
       </button>
     );
   }

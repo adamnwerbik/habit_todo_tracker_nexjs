@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import HabitEditForm from "./HabitEditForm";
+import { MdOutlineModeEdit } from "react-icons/md";
 
 const EditHabitButton = (props: { id: number }) => {
   const [wantsToEdit, setWantsToEdit] = useState(false);
@@ -14,7 +15,10 @@ const EditHabitButton = (props: { id: number }) => {
         console.log("edit");
       }}
     >
-      Edit button
+      <div className="flex flex-row items-center justify-center">
+        <MdOutlineModeEdit size={20} />
+        <p className="ml-1">Edit Habit</p>
+      </div>
     </button>
   );
 };
