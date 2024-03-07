@@ -29,7 +29,7 @@ const DeleteHabitButton = (props: { id: number }) => {
       >
         <div className="flex flex-row items-center justify-center">
           <MdDeleteOutline size={20} />
-          <p className="ml-1">Edit Habit</p>
+          <p className="ml-1">Delete</p>
         </div>
       </button>
     );

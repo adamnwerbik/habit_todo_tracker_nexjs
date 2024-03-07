@@ -86,7 +86,7 @@ export default function HabitSummary(props: {
         <div className="size-48 m-2 rounded-md border-gray-200 border shadow">
           <div className="p-2 items-center flex flex-col">
             <div>
-              <h2>Habit Strength</h2>
+              <h6>Habit Strength</h6>
             </div>
             <div className=" max-w-36 max-h-36 ">
               <Gauge

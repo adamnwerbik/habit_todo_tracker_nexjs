@@ -17,7 +17,7 @@ const EditHabitButton = (props: { id: number }) => {
     >
       <div className="flex flex-row items-center justify-center">
         <MdOutlineModeEdit size={20} />
-        <p className="ml-1">Edit Habit</p>
+        <p className="ml-1">Edit</p>
       </div>
     </button>
   );
