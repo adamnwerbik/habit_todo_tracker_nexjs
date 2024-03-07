@@ -8,7 +8,7 @@ export default function SignUpButton() {
 
   return (
     <button
-      className="border border-gray-400 bg-gray-100 py-3 px-20 rounded-md hover:bg-gray-200"
+      className="border border-gray-400 bg-white py-3 px-20 rounded-md hover:bg-gray-200 font-2xl"
       onClick={(e) => router.push("/login")}
     >
       Sign Up
