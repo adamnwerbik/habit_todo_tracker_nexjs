@@ -7,9 +7,6 @@ import { useEffect, useState } from "react";
 import { MdOutlineAddTask } from "react-icons/md";
 import { IoCloseOutline } from "react-icons/io5";
 import { addANewHabitToSB } from "./ServerFns";
-import { SWRConfig } from "swr";
-
-const fetcher = async () => "a";
 
 const HabitAdderForm = (props: any) => {
   const [wantsToAddHabbit, setWantsToAddHabbit] = useState(false);

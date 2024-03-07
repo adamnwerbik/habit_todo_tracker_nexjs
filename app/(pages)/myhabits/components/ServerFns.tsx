@@ -79,3 +79,8 @@ export async function addAHabitDoLog(
   }
   return fetcherHabitDoLog(habitID.toString());
 }
+
+export async function deleteAHabitByID(id: number) {
+  const sb = createClient();
+  const { error } = await sb.from("habits").delete().eq("id", id);
+}

@@ -7,6 +7,12 @@ import { add, format } from "date-fns";
 import { summary } from "date-streaks";
 import { Gauge } from "react-circular-gauge";
 import { Activity } from "react-activity-calendar";
+import HabitEditDeleteBtns from "./HabitEditDeleteBtns";
+import dynamic from "next/dynamic";
+
+const DynamicComponent = dynamic(() => import("./ActivityCal"), {
+  ssr: false,
+});
 
 export default function HabitSummary(props: {
   habitID: number;
@@ -75,21 +81,25 @@ export default function HabitSummary(props: {
   return (
     <div>
       <h1>Habit: {props.habitData[0].habitName}</h1>
+      <HabitEditDeleteBtns id={props.habitID} />
       <div className="flex flex-col md:flex-row justify-evenly items-center md:min-w-[700px] lg:min-w-[800px]">
         <div className="size-48 m-2 rounded-md border-gray-200 border shadow">
-          <div className="p-5">
-            <Gauge
-              value={scoreHabits(dates)}
-              minValue={0}
-              maxValue={100}
-              arcWidth={0.11}
-              trackWidth={0.03}
-              arcColor={"#358960"}
-              trackColor={"#E5E7EB"}
-              animated={true}
-              renderTopLabel={"Habit Strength"}
-              topLabelStyle={{ fontSize: 15 }}
-            />
+          <div className="p-2 items-center flex flex-col">
+            <div>
+              <h2>Habit Strength</h2>
+            </div>
+            <div className=" max-w-36 max-h-36 ">
+              <Gauge
+                value={scoreHabits(dates)}
+                minValue={0}
+                maxValue={100}
+                arcWidth={0.11}
+                trackWidth={0.03}
+                arcColor={"#358960"}
+                trackColor={"#E5E7EB"}
+                animated={true}
+              />
+            </div>
           </div>
         </div>
         <div className="size-48 m-2 rounded-md border-gray-200 border shadow">
@@ -113,11 +123,7 @@ export default function HabitSummary(props: {
         </div>
       </div>
       <div className="overflow-hidden mt-4">
-        <ActivityCal dates={dates} />
-      </div>
-      <div>
-        <div>EDIT (Todo)</div>
-        <div>DELETE (Todo)</div>
+        <DynamicComponent dates={dates} />
       </div>
     </div>
   );
